@@ -12,7 +12,7 @@ class Umbrella {
         emailUtil = _emailUtil
     }
 
-    private fun calTotalPrice(quantity: Int, weather: IWeather) : Int {
+    fun calTotalPrice(quantity: Int, weather: IWeather) : Int {
         //計算金額
         var total = price!! * quantity
         val isSunny = weather.isSunny()
@@ -24,7 +24,7 @@ class Umbrella {
     }
 
 
-    private fun calTotalPrice(quantity: Int) : Int {
+    fun calTotalPrice(quantity: Int) : Int {
         //計算金額
         var total = price!! * quantity
         val isSunny = weather?.isSunny()
@@ -38,9 +38,7 @@ class Umbrella {
     //當今天使用者完成訂單後，寄信給使用者。使用emailUtil。採用construct inject 方式。
     //目標：計算價格、寄信提醒使用者訂單完成。
 
-    fun insertOrder(quantity: Int){
-        val totalPrice = calTotalPrice(quantity)
-        val receiveEmail = "abctest@gmail.com"
+    fun insertOrder(quantity: Int,receiveEmail : String,totalPrice : Int){
         emailUtil?.sendEmail(receiveEmail,totalPrice,quantity)
     }
 
