@@ -11,7 +11,6 @@ class UmbrellaTest {
             return true
         }
     }
-
     class MockEmailUtil :IEmailUtil{
         // receiveEmail 用來記錄由sendCustomer傳進來的Email
         //用來驗證是否有正確的與相依互動
@@ -24,7 +23,6 @@ class UmbrellaTest {
             this.quantity = quantity
         }
     }
-
     //expected : 90
     //stub : IWeather
     @Test
@@ -41,7 +39,7 @@ class UmbrellaTest {
     //expected : 90
     //stub : IWeather
     @Test
-    fun totalPriceConstructor() {
+    fun given_Sunnyday_When_BuyUmbrella_Expect_Discount() {
         val weather : IWeather = StubWeather()
         val umbrella = Umbrella(100, weather)
         val expected = 90
@@ -52,9 +50,9 @@ class UmbrellaTest {
     //expected : 90
     //SUT : umbrella.insertOrder
     //stub : IWeather
-    //mock : emailUtil
+    //mock : emailUtil : 驗證 insertOrder 有使用到emailUtil 的 sendMethod()
     @Test
-    fun insertOrder() {
+    fun given_Profile_When_BuyUmbrella_Expect_SendEmailToUser() {
         val weather = StubWeather()
         val emailUtil = MockEmailUtil()
         val oriPrice = 100
@@ -67,8 +65,6 @@ class UmbrellaTest {
         Assert.assertEquals(totalPrice,emailUtil.totalPrice)
         Assert.assertEquals(quantity,emailUtil.quantity)
         Assert.assertEquals(receiveEmail,emailUtil.receiveMail)
-
     }
-
 
 }
