@@ -1,5 +1,7 @@
 import org.junit.Assert
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.*
 
 class UmbrellaTest {
 
@@ -39,12 +41,14 @@ class UmbrellaTest {
     //expected : 90
     //stub : IWeather
     @Test
-    fun given_Sunnyday_When_BuyUmbrella_Expect_Discount() {
-        val weather : IWeather = StubWeather()
+    fun given_SunnyDay_When_BuyUmbrella_Expect_Discount() {
+        val weather = mock(IWeather::class.java)
+        `when`(weather.isSunny()).thenReturn(true)
         val umbrella = Umbrella(100, weather)
         val expected = 90
         val cost = umbrella.calTotalPrice(1)
         Assert.assertEquals(expected,cost)
+
     }
 
     //expected : 90
@@ -53,18 +57,21 @@ class UmbrellaTest {
     //mock : emailUtil : 驗證 insertOrder 有使用到emailUtil 的 sendMethod()
     @Test
     fun given_Profile_When_BuyUmbrella_Expect_SendEmailToUser() {
-        val weather = StubWeather()
-        val emailUtil = MockEmailUtil()
+        //stub
+        val weather = mock(IWeather::class.java)
+        `when`(weather.isSunny()).thenReturn(true)
+        //mock
+        val mockEmailUtil = mock(IEmailUtil::class.java)
+
         val oriPrice = 100
-        val umbrella = Umbrella(oriPrice,weather,emailUtil)
+        val umbrella = Umbrella(oriPrice,weather,mockEmailUtil)
         val quantity = 1
         val receiveEmail = "abctest@gmail.com"
-        val totalPrice = umbrella.calTotalPrice(1)
+        val totalPrice = 90
 
         umbrella.insertOrder(1,receiveEmail,totalPrice)
-        Assert.assertEquals(totalPrice,emailUtil.totalPrice)
-        Assert.assertEquals(quantity,emailUtil.quantity)
-        Assert.assertEquals(receiveEmail,emailUtil.receiveMail)
+//        verify(mockEmailUtil).sendEmail(receiveEmail,totalPrice,quantity)
+        verify(mockEmailUtil, times(1)).sendEmail(receiveEmail,totalPrice,quantity)
     }
 
 }
